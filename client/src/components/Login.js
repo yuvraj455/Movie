@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import './style.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,46 +30,34 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'linear-gradient(90deg, rgba(56, 87, 242, 1) 0%, rgba(155, 48, 255, 1) 100%)' }}>
-      <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)', width: '100%', maxWidth: '400px' }}>
-        <h2 style={{ fontSize: '2rem', fontWeight: '600', color: '#4c51bf', textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
+          <div className="input-group">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
-              style={{ width: '100%', padding: '0.75rem', border: '1px solid #cbd5e0', borderRadius: '8px', fontSize: '1rem', marginBottom: '0.75rem' }}
+              className="input-field"
               required
             />
           </div>
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div className="input-group">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              style={{ width: '100%', padding: '0.75rem', border: '1px solid #cbd5e0', borderRadius: '8px', fontSize: '1rem', marginBottom: '0.75rem' }}
+              className="input-field"
               required
             />
           </div>
-          <button
-            type="submit"
-            style={{ width: '100%', backgroundColor: '#3182ce', color: 'white', padding: '0.75rem', borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.3s ease' }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2b6cb0'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3182ce'}
-          >
-            Login
-          </button>
+          <button type="submit" className="submit-button">Login</button>
         </form>
-        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-          <button
-            onClick={handleGoogleLogin}
-            style={{ width: '100%', backgroundColor: '#e53e3e', color: 'white', padding: '0.75rem', borderRadius: '8px', cursor: 'pointer', transition: 'background-color 0.3s ease' }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#c53030'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#e53e3e'}
-          >
+        <div className="google-login">
+          <button onClick={handleGoogleLogin} className="google-button">
             Login with Google
           </button>
         </div>

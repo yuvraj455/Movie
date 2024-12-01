@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import AddMovie from './components/AddMovie';
 import EditMovie from './components/EditMovie';
+import MovieDetail from './components/MovieDetail'; // Import the MovieDetail component
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/add-movie" element={<AddMovie />} />
               <Route path="/edit-movie/:id" element={<EditMovie />} />
+              <Route path="/movie/:id" element={<MovieDetail />} /> {/* Add MovieDetail route */}
             </Routes>
           </main>
         </div>
@@ -30,4 +32,3 @@ function App() {
 }
 
 export default App;
-

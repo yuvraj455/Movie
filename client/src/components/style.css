@@ -1,111 +1,155 @@
+/* Remove default padding and margins */
+body, html {
+  margin: 0;
+  padding: 0;
+}
 /* EditMovie.css */
-.loading-message {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.form-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
+/* Title Styling */
 .form-title {
-  text-align: center;
-  color: #4c51bf;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
+  font-size: 2.8rem;
   font-weight: bold;
+  color: #1e3a8a;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-form input,
-form textarea {
+/* Movie Poster Container */
+.movie-poster-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.movie-poster {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
 }
 
-form textarea {
-  min-height: 100px;
+/* Form Styling */
+.edit-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
+/* Input, Textarea, and Select Styling */
+.form-input,
+.form-textarea,
+.form-select,
+.form-file-input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus,
+.form-file-input:focus {
+  border-color: #346da3;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 109, 163, 0.5);
+}
+
+/* Textarea Styling */
+.form-textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+/* Button Styling */
 .form-button {
   width: 100%;
-  padding: 12px;
-  background-color: #4c51bf;
-  color: white;
-  font-size: 16px;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #1e3a8a;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .form-button:hover {
-  background-color: #3730a3;
+  background-color: #346da3;
+}
+
+/* Error and Loading Messages */
+.error-message,
+.loading-message {
+  text-align: center;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+/* Labels Styling */
+label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 2rem;
+  }
+
+  .form-button {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
 }
 /* Home.css */
-
 /* Header Section */
 .header {
-  background-image: url('https://i.pinimg.com/736x/87/45/71/87457141110db7a11dcb7469dc31bb9f.jpg'); /* Use your own banner image */
+  background-image: url('https://i.pinimg.com/736x/87/45/71/87457141110db7a11dcb7469dc31bb9f.jpg');
   background-size: cover;
   background-position: center;
   height: 400px;
   display: flex;
-  justify-content: flex-end; /* Aligns the content to the right horizontally */
-  align-items: flex-end; /* Aligns the content to the bottom right vertically */
-  padding-right: 2rem; /* Add some padding from the right side */
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 2rem;
   color: black;
   font-size: 30px;
   font-weight: bold;
-  
+  width:100%;
 }
 
-
 .header h1 {
-  margin-bottom:150px;
+  margin-bottom: 150px;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
+
 /* Movie Grid Section */
+/* Movie Grid Section for Desktop */
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
   gap: 1.5rem;
   padding: 2rem;
-}
-
-/* Movie Grid Styles */
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Auto-responsive grid */
-  gap: 20px;
-  padding: 20px;
-  justify-items: center; /* Center grid items */
 }
 
 /* Movie Card Styles */
@@ -113,74 +157,104 @@ form textarea {
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
-  width: 280px; /* Fixed width for the cards */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative; /* Ensure content and button are in the correct layers */
+  margin-bottom: 1.5rem;
+  height: auto; /* Let height be auto for better control */
+  max-width: 300px; /* Fix card width */
+  margin-left: auto;
+  margin-right: auto; /* Center the cards */
 }
 
+/* Hover effect for movie card */
 .movie-card:hover {
   transform: scale(1.05); /* Slightly enlarge card on hover */
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Movie Image */
 .movie-image {
   width: 100%;
-  height: 200px; /* Fixed height for the image */
-  object-fit: cover; /* Ensures the image fills the area without distortion */
-  border-bottom: 2px solid #948979; /* Border color */
+  height: 380px; /* Set fixed height for portrait image */
+  object-fit: cover; /* Ensure the image fits in the container without distortion */
+  border-bottom: 2px solid #948979;
 }
 
 /* Movie Info */
 .movie-info {
-  padding: 15px;
-  background-color: #F9F9F9; /* Slightly darker background for content */
+  padding: 15px; /* Adjusted padding for better spacing */
+  background-color: #F9F9F9;
+  text-align: center;
+  overflow: hidden; /* Hide overflow */
 }
 
+/* Movie Title Styling */
 .movie-info h2 {
-  font-size: 18px;
-  color: #153448;  /* Dark blue text for titles */
+  font-size: 28px; /* Increased size for better visibility */
+  color: #153448; /* Dark blue color for the movie title */
   margin-bottom: 10px;
+  font-weight: bold; /* Bold title */
+  line-height: 1.3;
+  text-transform: capitalize; /* Capitalize the first letter of each word */
+  font-family: 'Roboto', sans-serif; /* Modern font for the title */
 }
 
+/* Movie Description Styling */
 .movie-info p {
   font-size: 14px;
-  color: #3C5B6F; /* Medium blue text for descriptions */
-  margin-bottom: 15px;
+  color: #3C5B6F;
+  line-height: 1.5;
+  margin-bottom: 10px; /* Reduced margin between description and rating */
+  text-align: justify;
+  padding: 0 10px;
+  font-family: 'Arial', sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden; /* Hide the rest of the content */
+  text-overflow: ellipsis; /* Add ellipsis when content is truncated */
 }
 
-
-
-/* Button Section */
-.button-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.button {
-  padding: 0.5rem 1rem;
+/* Learn More Button */
+.learn-more-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #153448; /* Dark blue color for the button */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
   border: none;
   transition: background-color 0.3s;
+  text-align: center;
+  margin-top: 20px; /* Add space between content and button */
+  width: 100%;
+  font-family: 'Roboto', sans-serif; /* Changed font family */
 }
 
-.edit-button {
-  background-color: #3182ce;
-  color: white;
+.learn-more-button:hover {
+  background-color: #1b4b6b; /* Darker shade of blue for hover */
 }
 
-.edit-button:hover {
-  background-color: #2b6cb0;
+/* Button Container - Adjust layout */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
 }
 
-.delete-button {
-  background-color: #e53e3e;
-  color: white;
+/* Movie Grid with Media Query for Desktop */
+@media (min-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on large screens */
+  }
 }
-
-.delete-button:hover {
-  background-color: #c53030;
-}
+/*HEADER.JS*/
 /* Header Styles */
 header {
   background-color: #153448; /* Dark background for header */
@@ -298,4 +372,435 @@ li {
 .error-message {
   color: red;
 }
+/* Enhanced styles for the login form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f8fafc;
+  padding: 1rem;
+  transition: background 0.5s ease;
+}
 
+.login-container:hover {
+  background: linear-gradient(135deg, #dbeafe, #f8fafc);
+}
+
+/* Login card styling */
+.login-card {
+  background: #153448;
+  padding: 3rem;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover .login-card {
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.login-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #f8fafc;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Input group styling */
+.input-group {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #1e3a8a;
+  box-shadow: 0 0 8px rgba(30, 58, 138, 0.6);
+}
+
+/* Submit button styling */
+.submit-button {
+  width: 100%;
+  background-color: #134B70;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #153448;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Google login button styling */
+.google-login {
+  margin-top: 2rem;
+}
+
+.google-button {
+  width: 100%;
+  background-color: #81689D;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.google-button:hover {
+  background-color: #614E73;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Form layout improvements */
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.submit-button,
+.google-button {
+  margin-top: 1rem;
+}
+
+
+/*MOVIE DETAIL.JS */
+/* Movie Detail Page */
+.movie-detail {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  background-color: #f8fafc;
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Movie Container (Flexbox for poster and content) */
+.movie-container {
+  display: flex; /* Arrange poster and content side by side */
+  gap: 2rem; /* Space between poster and content */
+  width: 100%;
+  max-width: 1200px; /* Max width for large screens */
+  background: linear-gradient(135deg, #dbeafe, #f8fafc);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Movie Poster (Left Side) */
+.movie-poster {
+  flex-shrink: 0; /* Prevent poster from shrinking */
+}
+
+.movie-image {
+  border-radius: 8px;
+  height:auto;
+}
+
+/* Movie Content (Right Side) */
+.movie-content {
+  flex: 1; /* Allow content to take up remaining space */
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  justify-content: flex-start; /* Align content from the top */
+}
+
+/* Movie Title */
+.movie-content h1 {
+  font-size: 36px;
+  color: #153448; /* Dark blue */
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: left;
+  text-transform: capitalize;
+}
+
+/* Movie Description */
+.movie-content p {
+  font-size: 18px;
+  color: #3C5B6F;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 1.5rem;
+  text-indent: 1rem;
+}
+
+/* Review Section */
+.movie-content .review p strong {
+  font-weight: bold;
+  color: #153448;
+}
+
+.movie-content .review {
+  font-size: 16px;
+  color: #444;
+  margin-top: 1rem;
+}
+
+/* Movie Rating */
+.movie-content .rating p {
+  font-size: 18px;
+  color: #e2a900; /* Gold color for rating */
+  margin-top: 1rem;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Edit Button */
+.edit-button {
+  padding: 0.75rem 2rem;
+  background-color: #153448; /* Dark blue */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 200px; /* Fixed button width */
+}
+
+.edit-button:hover {
+  background-color: #1b4b6b; /* Darker blue on hover */
+}
+
+/* Delete Button */
+.delete-button {
+  padding: 0.75rem 2rem;
+  background-color: #e53e3e; /* Red color for delete */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 200px; /* Fixed button width */
+}
+
+.delete-button:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+/* Error Message */
+.error-message {
+  background-color: #fef2f2;
+  color: #e53e3e;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+/*ADD MOVIE.JS*/
+/* Enhanced styles for the Add Movie page */
+.add-movie-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f8fafc;
+  padding: 1rem;
+  margin-top: 0;
+  transition: background 0.5s ease;
+  margin: 0; /* Remove all margin */
+  padding: 0; /* Optional: remove padding if needed */
+}
+
+.add-movie-container:hover {
+  background: linear-gradient(135deg, #dbeafe, #f8fafc);
+}
+
+
+/* Add Movie card styling */
+.add-movie-card {
+  background: #153448;
+  padding: 3rem;
+  margin-top:0s;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 800px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-movie-container:hover .add-movie-card {
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Title style */
+.add-movie-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #f8fafc;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Input group styling */
+.add-movie-form-group {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.add-movie-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.add-movie-input,
+.add-movie-textarea,
+.add-movie-file-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-movie-input:focus,
+.add-movie-textarea:focus,
+.add-movie-file-input:focus {
+  outline: none;
+  border-color: #1e3a8a;
+  box-shadow: 0 0 8px rgba(30, 58, 138, 0.6);
+}
+
+/* Textarea specific styles */
+.add-movie-textarea {
+  min-height: 120px;
+}
+
+/* Submit button styling */
+.add-movie-button {
+  width: 100%;
+  background-color: #134B70;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-movie-button:hover {
+  background-color: #153448;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Error message */
+.add-movie-error {
+  color: #e74c3c;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Form layout improvements */
+.add-movie-card form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-movie-form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.add-movie-button {
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+/* Make Description and Review appear in the same row */
+.add-movie-form-row {
+  display: flex;
+  gap: 3rem; /* Space between the fields */
+  width: 100%;
+}
+
+.add-movie-form-row .add-movie-form-group {
+  flex: 1; /* Distribute the available space */
+}
+/* Container for Rating and Image in the same row */
+.add-movie-form-row-rating-image {
+  display: flex;
+  gap: 2rem; /* Adjust the space between the Rating and Image fields */
+  width: 100%;
+  align-items: center; /* Align items vertically in the middle */
+}
+
+/* Additional styling for Rating select and Image file input */
+.add-movie-form-rating,
+.add-movie-form-image {
+  flex: 1; /* Allow fields to expand equally */
+  min-width: 0; /* Prevent overflow */
+}
+
+.add-movie-form-row .add-movie-textarea {
+  min-height: 120px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .add-movie-card {
+    padding: 2rem;
+  }
+
+  .add-movie-title {
+    font-size: 1.8rem;
+  }
+
+  .add-movie-input,
+  .add-movie-textarea,
+  .add-movie-button,
+  .add-movie-file-input {
+    font-size: 1rem;
+  }
+
+  .add-movie-form-row {
+    flex-direction: column;
+  }
+}

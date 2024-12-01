@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './style.css';  // Importing the custom CSS for styling
 
 const AddMovie = () => {
   const [title, setTitle] = useState('');
@@ -43,71 +44,78 @@ const AddMovie = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">Add New Movie</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="title" className="block mb-1">Name:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="description" className="block mb-1">Description:</label>
+<div className="add-movie-container">
+  <div className="add-movie-card">
+    <h2 className="add-movie-title">Add New Movie</h2>
+    {error && <p className="add-movie-error">{error}</p>}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="add-movie-form-group">
+        <label htmlFor="title" className="add-movie-label">Name:</label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          className="add-movie-input"
+        />
+      </div>
+      <div className="add-movie-form-row">
+        <div className="add-movie-form-group">
+          <label htmlFor="description" className="add-movie-label">Description:</label>
           <textarea
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="add-movie-textarea"
           ></textarea>
         </div>
-        <div>
-          <label htmlFor="review" className="block mb-1">Review:</label>
+        <div className="add-movie-form-group">
+          <label htmlFor="review" className="add-movie-label">Review:</label>
           <textarea
             id="review"
             value={review}
             onChange={(e) => setReview(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="add-movie-textarea"
             placeholder="Write your review here"
           ></textarea>
         </div>
-        <div>
-          <label htmlFor="rating" className="block mb-1">Rating (1-5):</label>
-          <input
-            type="number"
-            id="rating"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-            min="1"
-            max="5"
-            required
-            className="w-full px-3 py-2 border rounded"
-            placeholder="Rate the movie (1-5)"
-          />
-        </div>
-        <div>
-          <label htmlFor="image" className="block mb-1">Movie Image:</label>
-          <input
-            type="file"
-            id="image"
-            onChange={(e) => setImage(e.target.files[0])}
-            accept="image/*"
-            className="w-full px-3 py-2 border rounded"
-          />
-        </div>
-        <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Add Movie
-        </button>
-      </form>
-    </div>
+      </div>
+      <div className="add-movie-form-row">
+      <div className="add-movie-form-group">
+        <label htmlFor="rating" className="add-movie-label">Rating (1-5):</label>
+        <input
+          type="number"
+          id="rating"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          min="1"
+          max="5"
+          required
+          className="add-movie-input"
+          placeholder="Rate the movie (1-5)"
+        />
+      </div>
+      <div className="add-movie-form-group">
+        <label htmlFor="image" className="add-movie-label">Movie Image:</label>
+        <input
+          type="file"
+          id="image"
+          required
+          onChange={(e) => setImage(e.target.files[0])}
+          accept="image/*"
+          className="add-movie-file-input"
+        />
+      </div>
+      </div>
+      <button type="submit" className="add-movie-button">
+        Add Movie
+      </button>
+    </form>
+  </div>
+</div>
   );
 };
 
