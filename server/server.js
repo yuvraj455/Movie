@@ -1,43 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const session = require('express-session');
 const passport = require('passport');
+const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const User = require('./models/User');
-const Movie = require('./models/Movie');
-require('dotenv').config();
-const fs = require('fs');
 const path = require('path');
-
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-  console.log('Uploads directory created.');
-}
+const jwt = require('jsonwebtoken');
 
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://moviehub-1-4tzm.onrender.com', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false }, // Set to true if using HTTPS
-}));
+
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -58,80 +40,28 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
 }));
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      let user = await User.findOne({ googleId: profile.id });
-      if (!user) {
-        user = await new User({
-          googleId: profile.id,
-          email: profile.emails[0].value,
-          name: profile.displayName,
-        }).save();
-      }
-      return done(null, user);
-    } catch (error) {
-      return done(error);
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: 'https://moviehub-hfvs.onrender.com/auth/google/callback'
+},
+async (accessToken, refreshToken, profile, done) => {
+  try {
+    let user = await User.findOne({ googleId: profile.id });
+    if (!user) {
+      user = await new User({
+        googleId: profile.id,
+        email: profile.emails[0].value,
+        name: profile.displayName,
+      }).save();
     }
+    return done(null, user);
+  } catch (error) {
+    return done(error);
   }
+}
 ));
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
-
-
 // Routes
-app.post('/api/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
-    await newUser.save();
-    res.json({ message: 'Registration successful.' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Registration failed.' });
-  }
-});
-
-app.post('/api/login', passport.authenticate('local'), (req, res) => {
-  res.json({ user: req.user });
-});
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('http://localhost:3000');
-  }
-);
-
-app.get('/api/logout', (req, res) => {
-  req.logout(err => {
-    if (err) return res.status(500).json({ message: 'Error logging out.', error: err.message });
-    res.json({ message: 'Logged out successfully.' });
-  });
-});
-
-app.get('/api/user', (req, res) => {
-  res.json(req.user || null);
-});
-
-// Additional Routes
 const authRoutes = require('./routes/auth');
 const movieRoutes = require('./routes/movies');
 
@@ -145,4 +75,3 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
