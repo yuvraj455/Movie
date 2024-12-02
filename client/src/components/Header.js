@@ -1,33 +1,30 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './style.css';
-import cinemaLogo from '../components/cinema.png';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
-    <header>
+    <header className="App-header">
       <nav>
-        <div className="logo-container">
-          <Link to="/">
-            <img src={cinemaLogo} alt="MovieHub Logo" className="logo-img" />
-          </Link>
-          <span className="site-title">MovieHub</span>
-        </div>
-        
         <ul>
-          <li><Link to="/" className="nav-link">Home</Link></li>
+          <li><Link to="/">Home</Link></li>
           {user ? (
             <>
-              <li><Link to="/add-movie" className="nav-link">Add Movie</Link></li>
-              <li><button onClick={logout} className="btn-logout">Logout</button></li>
+              <li><Link to="/add-movie">Add Movie</Link></li>
+              <li><button onClick={handleLogout}>Logout</button></li>
             </>
           ) : (
             <>
-              <li><Link to="/login" className="nav-link">Login</Link></li>
-              <li><Link to="/register" className="nav-link btn-register">Register</Link></li>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/register">Register</Link></li>
             </>
           )}
         </ul>

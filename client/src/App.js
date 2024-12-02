@@ -7,7 +7,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 import AddMovie from './components/AddMovie';
 import MovieDetail from './components/MovieDetail';
+import EditMovie from './components/EditMovie';
 import AuthCallback from './components/AuthCallback';
+import './App.css';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/add-movie" element={<AddMovie />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
+            <Route path="/edit-movie/:id" element={<EditMovie />} />
             <Route path="/auth-callback" element={<AuthCallback />} />
           </Routes>
         </div>

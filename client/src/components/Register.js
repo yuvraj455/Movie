@@ -11,58 +11,42 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const success = await register(name, email, password);
-      if (success) {
-        navigate('/');
-      } else {
-        alert('Registration failed, please try again.');
-      }
+      await register(name, email, password);
+      navigate('/');
     } catch (error) {
-      console.error('Registration Error:', error);
-      alert('An error occurred during registration. Please try again.');
+      console.error('Registration error:', error);
+      // Handle registration error (e.g., show error message)
     }
   };
 
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <h2 className="register-title">Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-              className="input-field"
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="input-field"
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="input-field"
-              required
-            />
-          </div>
-          <button type="submit" className="submit-button">Register</button>
-        </form>
-      </div>
+    <div className="auth-form">
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Register</button>
+      </form>
     </div>
   );
 };

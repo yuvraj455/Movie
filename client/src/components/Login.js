@@ -10,56 +10,37 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const success = await login(email, password);
-      if (success) {
-        navigate('/');
-      } else {
-        alert('Login failed, please check your credentials.');
-      }
+      await login(email, password);
+      navigate('/');
     } catch (error) {
-      console.error('Login Error:', error);
-      alert('An error occurred during login. Please try again.');
+      console.error('Login error:', error);
+      // Handle login error (e.g., show error message)
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'https://movie-tfrt.onrender.com/auth/google';
-  };
-
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2 className="login-title">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="input-field"
-              required
-            />
-          </div>
-          <div className="input-group">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="input-field"
-              required
-            />
-          </div>
-          <button type="submit" className="submit-button">Login</button>
-        </form>
-        <div className="google-login">
-          <button onClick={handleGoogleLogin} className="google-button">
-            Login with Google
-          </button>
-        </div>
+    <div className="auth-form">
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      <div>
+        <a href="https://movie-tfrt.onrender.com/auth/google">Login with Google</a>
       </div>
     </div>
   );

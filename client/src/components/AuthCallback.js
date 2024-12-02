@@ -3,26 +3,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const AuthCallback = () => {
-  const { setUser } = useContext(AuthContext);
+  const { loginWithToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token');
+    const urlParams = new URLSearchParams(location.search);
+    const token = urlParams.get('token');
 
     if (token) {
-      localStorage.setItem('token', token);
-      // You might want to verify the token here and set the user
-      // For simplicity, we're just setting a dummy user object
-      setUser({ id: 'google-user' });
+      loginWithToken(token);
       navigate('/');
     } else {
       navigate('/login');
     }
-  }, [location, navigate, setUser]);
+  }, [location, loginWithToken, navigate]);
 
-  return <div>Processing authentication...</div>;
+  return <div>Processing login...</div>;
 };
 
 export default AuthCallback;

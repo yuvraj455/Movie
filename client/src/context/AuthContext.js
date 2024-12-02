@@ -35,10 +35,9 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('https://movie-tfrt.onrender.com/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
-      return true;
     } catch (error) {
       console.error('Login failed:', error);
-      return false;
+      throw error;
     }
   };
 
@@ -47,10 +46,9 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post('https://movie-tfrt.onrender.com/auth/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
-      return true;
     } catch (error) {
       console.error('Registration failed:', error);
-      return false;
+      throw error;
     }
   };
 
@@ -59,12 +57,13 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const loginWithToken = (token) => {
+    localStorage.setItem('token', token);
+    verifyToken(token);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loginWithToken, loading }}>
       {children}
     </AuthContext.Provider>
   );
