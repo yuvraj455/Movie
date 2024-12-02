@@ -3,7 +3,7 @@ const router = express.Router();
 const Movie = require('../models/Movie');
 const multer = require('multer');
 const path = require('path');
-const { authenticateToken } = require('../middleware/auth');
+const jwt = require('jsonwebtoken');
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -29,6 +29,24 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
 });
 
+// Middleware to authenticate token
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
+    next();
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid token.' });
+  }
+};
+
 // Create a new movie
 router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
   const { title, description, review, rating } = req.body;
@@ -44,7 +62,7 @@ router.post('/', authenticateToken, upload.single('image'), async (req, res) => 
       review,
       rating,
       image: req.file ? `https://movie-tfrt.onrender.com/uploads/${req.file.filename}` : null,
-      createdBy: req.user._id,
+      createdBy: req.user.id, // Use req.user.id instead of req.user._id
     });
 
     const savedMovie = await newMovie.save();
@@ -98,7 +116,7 @@ router.put('/:id', authenticateToken, upload.single('image'), async (req, res) =
     }
 
     // Check if the user is authorized to update the movie
-    if (movie.createdBy.toString() !== req.user._id.toString()) {
+    if (movie.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: 'You are not authorized to edit this movie' });
     }
 
@@ -131,7 +149,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     // Check if the user is authorized to delete the movie
-    if (movie.createdBy.toString() !== req.user._id.toString()) {
+    if (movie.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: 'You are not authorized to delete this movie' });
     }
 
