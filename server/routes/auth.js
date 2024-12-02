@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Helper function to generate JWT
 const generateToken = (user) => {
