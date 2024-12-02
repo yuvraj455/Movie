@@ -8,47 +8,64 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/api/user', { withCredentials: true });
-        if (res.data) {
-          setUser(res.data);
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkUser();
+    const token = localStorage.getItem('token');
+    if (token) {
+      verifyToken(token);
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const verifyToken = async (token) => {
+    try {
+      const response = await axios.get('https://moviehub-hfvs.onrender.com/auth/verify', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(response.data.user);
+    } catch (error) {
+      console.error('Token verification failed:', error);
+      localStorage.removeItem('token');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/login', { email, password }, { withCredentials: true });
-      setUser(res.data.user);
+      const response = await axios.post('https://moviehub-hfvs.onrender.com/auth/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      setUser(response.data.user);
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login failed:', error);
       return false;
     }
   };
 
-  const logout = async () => {
+  const register = async (name, email, password) => {
     try {
-      await axios.get('http://localhost:5000/api/logout', { withCredentials: true });
-      setUser(null);
+      const response = await axios.post('https://moviehub-hfvs.onrender.com/auth/register', { name, email, password });
+      localStorage.setItem('token', response.data.token);
+      setUser(response.data.user);
       return true;
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Registration failed:', error);
       return false;
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, setUser }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, login, register, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };
-

@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './style.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +14,7 @@ const Login = () => {
     try {
       const success = await login(email, password);
       if (success) {
-        navigate('/'); // Redirect on success
+        navigate('/');
       } else {
         alert('Login failed, please check your credentials.');
       }
@@ -26,7 +25,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google'; // Ensure this matches your backend route
+    window.location.href = 'https://moviehub-hfvs.onrender.com/auth/google';
   };
 
   return (
