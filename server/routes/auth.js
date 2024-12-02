@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
 
 // Helper function to generate JWT
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET || '1b55911bc5e8b1e640aff2e8916f84106333bdce6958f55c233d10ca32dc0ef5', { expiresIn: '1d' });
 };
 
 // Register route
@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
     const token = generateToken(newUser);
@@ -43,16 +43,26 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-// Google OAuth routes
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// Only add Google routes if OAuth is configured
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', 
-  passport.authenticate('google', { session: false, failureRedirect: '/login' }),
-  (req, res) => {
-    const token = generateToken(req.user);
-    res.redirect(`https://moviehub-1-4tzm.onrender.com/auth-callback?token=${token}`);
-  }
-);
+  router.get('/google/callback', 
+    passport.authenticate('google', { session: false, failureRedirect: '/login' }),
+    (req, res) => {
+      const token = generateToken(req.user);
+      res.redirect(`https://moviehub-1-4tzm.onrender.com/auth-callback?token=${token}`);
+    }
+  );
+} else {
+  // Add a route to inform clients that Google auth is not available
+  router.get('/google', (req, res) => {
+    res.status(503).json({ 
+      message: 'Google authentication is not configured',
+      status: 'disabled'
+    });
+  });
+}
 
 // Verify token route
 router.get('/verify', (req, res) => {
@@ -61,7 +71,7 @@ router.get('/verify', (req, res) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET || 'your-default-secret', (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'Invalid token' });
     }
