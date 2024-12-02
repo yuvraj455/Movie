@@ -10,7 +10,7 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'https://moviehub-1-4tzm.onrender.com', credentials: true }));
+app.use(cors({ origin: 'https://movie-1-gyg3.onrender.com', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -43,7 +43,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://moviehub-hfvs.onrender.com/auth/google/callback'
+    callbackURL: 'https://movie-tfrt.onrender.com/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {

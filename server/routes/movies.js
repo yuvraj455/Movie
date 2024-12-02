@@ -60,7 +60,7 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
       description,
       review,
       rating,
-      image: req.file ? `https://moviehub-hfvs.onrender.com/uploads/${req.file.filename}` : null,
+      image: req.file ? `https://movie-tfrt.onrender.com/uploads/${req.file.filename}` : null,
       createdBy: req.user.id,
     });
 
@@ -120,7 +120,7 @@ router.put('/:id', isAuthenticated, upload.single('image'), async (req, res) => 
     movie.rating = rating || movie.rating;
 
     if (req.file) {
-      movie.image = `https://moviehub-hfvs.onrender.com/uploads/${req.file.filename}`;
+      movie.image = `https://movie-tfrt.onrender.com/uploads/${req.file.filename}`;
     }
 
     const updatedMovie = await movie.save();

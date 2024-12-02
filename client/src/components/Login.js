@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'https://moviehub-hfvs.onrender.com/auth/google';
+    window.location.href = 'https://movie-tfrt.onrender.com/auth/google';
   };
 
   return (

@@ -51,7 +51,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     passport.authenticate('google', { session: false, failureRedirect: '/login' }),
     (req, res) => {
       const token = generateToken(req.user);
-      res.redirect(`https://moviehub-1-4tzm.onrender.com/auth-callback?token=${token}`);
+      res.redirect(`https://movie-1-gyg3.onrender.com/auth-callback?token=${token}`);
     }
   );
 } else {

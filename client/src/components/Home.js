@@ -17,7 +17,7 @@ const Home = () => {
   const fetchMovies = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('https://moviehub-hfvs.onrender.com/api/movies', {
+      const res = await axios.get('https://movie-tfrt.onrender.com/api/movies', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMovies(res.data);

@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyToken = async (token) => {
     try {
-      const response = await axios.get('https://moviehub-hfvs.onrender.com/auth/verify', {
+      const response = await axios.get('https://movie-tfrt.onrender.com/auth/verify', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(response.data.user);
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('https://moviehub-hfvs.onrender.com/auth/login', { email, password });
+      const response = await axios.post('https://movie-tfrt.onrender.com/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
       return true;
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const response = await axios.post('https://moviehub-hfvs.onrender.com/auth/register', { name, email, password });
+      const response = await axios.post('https://movie-tfrt.onrender.com/auth/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
       return true;

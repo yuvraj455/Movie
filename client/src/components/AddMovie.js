@@ -26,7 +26,7 @@ const AddMovie = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://moviehub-hfvs.onrender.com/api/movies', formData, {
+      await axios.post('https://movie-tfrt.onrender.com/api/movies', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

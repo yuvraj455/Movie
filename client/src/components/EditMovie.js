@@ -27,7 +27,7 @@ const EditMovie = () => {
 
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`https://moviehub-hfvs.onrender.com/api/movies/${id}`, { withCredentials: true });
+        const res = await axios.get(`https://movie-tfrt.onrender.com/api/movies/${id}`, { withCredentials: true });
         setTitle(res.data.title);
         setDescription(res.data.description);
         setReview(res.data.review || '');
@@ -76,7 +76,7 @@ const EditMovie = () => {
 
     try {
       const res = await axios.put(
-        `https://moviehub-hfvs.onrender.com/api/movies/${id}`,
+        `https://movie-tfrt.onrender.com/api/movies/${id}`,
         formData,
         {
           headers: {
