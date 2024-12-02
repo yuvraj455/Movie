@@ -3,25 +3,9 @@ const router = express.Router();
 const Movie = require('../models/Movie');
 const multer = require('multer');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+const { authenticateToken } = require('../middleware/auth');
 
-// Middleware to check if the user is authenticated
-const isAuthenticated = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
-    }
-    req.user = decoded;
-    next();
-  });
-};
-
-// Set up multer for file uploads
+// Multer configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -33,23 +17,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5000000 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     const fileTypes = /jpeg|jpg|png/;
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = fileTypes.test(file.mimetype);
-    if (mimetype && extname) {
+    const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimeType = fileTypes.test(file.mimetype);
+    if (extName && mimeType) {
       return cb(null, true);
-    } else {
-      cb('Error: Images only!');
     }
-  }
+    cb(new Error('Only JPEG, JPG, and PNG files are allowed'));
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
 });
 
 // Create a new movie
-router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
+router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
   const { title, description, review, rating } = req.body;
-  
+
   if (!title || !description || !review || !rating) {
     return res.status(400).json({ message: 'Title, description, review, and rating are required' });
   }
@@ -61,7 +44,7 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
       review,
       rating,
       image: req.file ? `https://movie-tfrt.onrender.com/uploads/${req.file.filename}` : null,
-      createdBy: req.user.id,
+      createdBy: req.user._id,
     });
 
     const savedMovie = await newMovie.save();
@@ -99,9 +82,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update a movie
-router.put('/:id', isAuthenticated, upload.single('image'), async (req, res) => {
+// Update a movie by ID
+router.put('/:id', authenticateToken, upload.single('image'), async (req, res) => {
   const { title, description, review, rating } = req.body;
+
+  if (!title || !description || !review || !rating) {
+    return res.status(400).json({ message: 'Title, description, review, and rating are required' });
+  }
 
   try {
     const movie = await Movie.findById(req.params.id);
@@ -110,29 +97,32 @@ router.put('/:id', isAuthenticated, upload.single('image'), async (req, res) => 
       return res.status(404).json({ message: 'Movie not found' });
     }
 
-    if (movie.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'You are not authorized to update this movie' });
+    // Check if the user is authorized to update the movie
+    if (movie.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to edit this movie' });
     }
 
-    movie.title = title || movie.title;
-    movie.description = description || movie.description;
-    movie.review = review || movie.review;
-    movie.rating = rating || movie.rating;
+    // Update movie fields
+    movie.title = title;
+    movie.description = description;
+    movie.review = review;
+    movie.rating = rating;
 
+    // Update the movie image if a new file is uploaded
     if (req.file) {
       movie.image = `https://movie-tfrt.onrender.com/uploads/${req.file.filename}`;
     }
 
     const updatedMovie = await movie.save();
-    res.json(updatedMovie);
+    res.status(200).json(updatedMovie);
   } catch (error) {
     console.error('Error updating movie:', error.message);
     res.status(500).json({ message: 'Failed to update movie. Please try again.', error: error.message });
   }
 });
 
-// Delete a movie
-router.delete('/:id', isAuthenticated, async (req, res) => {
+// Delete a movie by ID
+router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
 
@@ -140,16 +130,22 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ message: 'Movie not found' });
     }
 
-    if (movie.createdBy.toString() !== req.user.id) {
+    // Check if the user is authorized to delete the movie
+    if (movie.createdBy.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You are not authorized to delete this movie' });
     }
 
-    await movie.remove();
-    res.json({ message: 'Movie removed' });
+    // Use deleteOne instead of remove
+    await Movie.deleteOne({ _id: req.params.id });
+
+    res.status(200).json({ message: 'Movie deleted successfully' });
   } catch (error) {
     console.error('Error deleting movie:', error.message);
     res.status(500).json({ message: 'Failed to delete movie. Please try again.', error: error.message });
   }
 });
+
+// Serve static files for uploaded images
+router.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 module.exports = router;
